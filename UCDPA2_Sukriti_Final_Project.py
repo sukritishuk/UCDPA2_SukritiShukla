@@ -613,3 +613,11 @@ params_rf = {'n_estimators': [300, 400, 500],
 # calling the model_tuning function with requisite Model arguments:
 model_tuning(RandomForestRegressor(random_state=42),params_rf)
 
+
+# B. Implementing GridSearchCV on Ridge Regression Model:
+# defining a grid of hyperparameters for Ridge Regression Model:
+params_ridge = {'alpha': range(0,10),
+            'max_iter': [10, 100, 1000]}
+
+# calling the model_tuning function with requisite Model arguments:
+model_tuning(Ridge(random_state=42),params_ridge)
