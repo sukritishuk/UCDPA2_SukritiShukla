@@ -609,15 +609,146 @@ params_rf = {'n_estimators': [300, 400, 500],
             'max_depth': [1, 4, 8],
             'min_samples_leaf': [0.1, 0.2],
             'max_features' : ['log2','sqrt']}
-
 # calling the model_tuning function with requisite Model arguments:
 model_tuning(RandomForestRegressor(random_state=42),params_rf)
+
 
 
 # B. Implementing GridSearchCV on Ridge Regression Model:
 # defining a grid of hyperparameters for Ridge Regression Model:
 params_ridge = {'alpha': range(0,10),
             'max_iter': [10, 100, 1000]}
-
 # calling the model_tuning function with requisite Model arguments:
 model_tuning(Ridge(random_state=42),params_ridge)
+
+
+# C. Implementing GridSearchCV on Gradient Boosting Regression Model:
+# defining a grid of hyperparameters for Gradient Boosting Regression Model:
+params_gbt = {'learning_rate': [0.01,0.02,0.03,0.04],
+              'subsample':[0.8, 0.4, 0.2, 0.1],
+              'n_estimators' : [100,400,800,1000],
+            'max_depth': [4, 6, 8, 10]}
+
+# calling the model_tuning function with requisite Model argument:
+model_tuning(GradientBoostingRegressor(random_state=42),params_gbt)
+
+
+# Step iii)  Using the Best Combination parameters from GridSearch Parameter Optimization & Running the Gradient Boosting Algorithm -
+# We have already split the dataset into 70% train and 30% test.
+
+# instantiating a Gradient Boosting Regressor, tuned_gbt with best combination parameters:
+tuned_gbt = GradientBoostingRegressor(learning_rate=0.01, subsample=0.2, n_estimators= 800, max_depth=8, random_state=42)
+
+# fitting tuned_gbt to the training set of Life expectancy dataset:
+tuned_gbt.fit(life_feature_train, life_target_train)
+
+# predicting the test set labels:
+tuned_y_pred = tuned_gbt.predict(life_feature_test)
+
+# comparing predicted Life Expectancy values with actual Life Expectancy values as a DataFrame:
+# computing the difference between actual Life expectancies and predicted Life expectancies:
+difference = life_target_test - tuned_y_pred
+df = pd.DataFrame({'Actual':life_target_test, 'Predicted':tuned_y_pred, 'Residuals': difference})
+# printing a snapshot of first 5 rows of the DataFrame:
+print(df.head())
+
+# visualizing the Actual vs. Predicted Life Expectancy values from the Tuned Gradient Boosting Regression Model:
+# specifying the size of the plot:
+plt.figure(figsize=(14,6))
+# adding a title to the plot:
+plt.title('Visualizing the Actual vs. Predicted Values for Tuned Gradient Boosting Regression Model', fontsize=14)
+# creating the plot for Tuned Gradient Boosting algorithm as a scatter and line plot:
+x_ax = range(len(life_target_test))
+plt.scatter(x_ax, life_target_test, s=5, color="blue", label="actual")
+plt.plot(x_ax, tuned_y_pred, lw=0.8, color="red", label="predicted")
+# adding a legend to the plot:
+plt.legend()
+# displaying the plot:
+plt.show()
+
+
+
+## Step 12 - Comparing Models Performances through Visualization and Regression Metrices -
+# Step i) Creating a Function to compute and store key Regression Metrices as a DataFrame -
+# defining a Function compare_models for all the Models -
+def compare_models(regressor):
+    """Function to fit the Model to the training set, predict on testing data, compute the key Regression Metrices and
+    store them in a DataFrame:"""
+
+    # instantiating the regressor for the model:
+    regress = regressor()
+
+    # fitting the regressor to the training data using the fit method:
+    regress.fit(life_feature_train, life_target_train)
+
+    # predicting on the testing data using the predict method:
+    life_pred = regress.predict(life_feature_test)
+
+    # computing the key Regression metrices and storing each in a variable:
+    RMSE = mean_squared_error(life_target_test, life_pred, squared=False).round(decimals=2)
+    MAE = mean_absolute_error(life_target_test, life_pred).round(decimals=2)
+    MSE = mean_squared_error(life_target_test, life_pred).round(decimals=2)
+    R2 = r2_score(life_target_test, life_pred).round(decimals=2)
+    MAPE = mean_absolute_percentage_error(life_target_test, life_pred).round(decimals=2)
+
+    # storing all the variables of metrices as a Python dictionary, data:
+    data = {'Model': [regress.__class__.__name__], 'Root Mean Squared Error': [RMSE], 'Mean Absolute Error': [MAE],
+            'Mean Squared Error': [MSE],
+            'R-squared': [R2], 'Mean Absolute Percentage Error': [MAPE]}
+    # using this Python dictionary to create a Pandas DataFrame for all computed metrices from the Model:
+    new_df = pd.DataFrame(data, columns=['Model', 'Root Mean Squared Error', 'Mean Absolute Error',
+                                         'Mean Squared Error', 'R-squared', 'Mean Absolute Percentage Error'])
+    # returning the Metrices' DataFrame created:
+    return new_df
+
+
+# Step ii) Running the compare_models function with different Models as argument and storing the output for each in a variable:
+lin_reg = compare_models(LinearRegression)
+ridg_reg = compare_models(Ridge)
+lasso_reg = compare_models(Lasso)
+gbt_reg = compare_models(GradientBoostingRegressor)
+
+
+# Step iii) Concatenating the Metrices' DataFrames created from each Model into one:
+# storing all the variables with Metrices' DataFrames from each model into a list:
+metrices_df = [lin_reg,ridg_reg,lasso_reg,gbt_reg,rf_df,dec_tree_df]  # also combining metrices computed from the tree models
+# concatenating metrices' list using the concat function:
+combined_metrices = pd.concat(metrices_df)
+# resetting the index of the combined DataFrame:
+combined_metrices.reset_index()
+# printing the combined DataFrame:
+print(combined_metrices)
+
+
+# Step iv) Visualization of Comparison of Metrices Computed from Different Models as Bar Plot and Table -
+# setting the figure and axis object for the first (top) plot:
+#fig, ax = plt.subplots(0,0)
+# creating the plot of Regression Metrices computed from Models as a bar plot:
+combined_metrices.plot(x='Model',y=['R-squared','Root Mean Squared Error','Mean Absolute Error', 'Mean Absolute Percentage Error'], kind='bar',figsize=(10,8))
+# adding x-axis ticks and formatting them:
+#plt.xticks(rotation = 45) # Rotates X-Axis Ticks by 45-degrees
+# adding a title to the plot:
+plt.title('Comparing Regression Metrices from Different Models')
+plt.show()
+
+# setting the figure and axis object for the second (bottom) plot:
+#plt.subplots(0,1)
+# specifying layout formats:
+plt.axis('tight')
+# setting the axes for table:
+plt.axis('off')
+# creating a Matplotlib table from the combined DataFrame for metrices computed:
+tab = plt.table(cellText=combined_metrices.values,colLabels=combined_metrices.columns,loc="top",colColours =["yellow"] * 6,
+              rowLoc='left',cellLoc='center')
+# setting the fontsize of text in the table created:
+tab.set_fontsize(15)
+# setting the size of the table created:
+tab.scale(1.6, 1.2)
+
+# setting the plot's layout:
+#fig.tight_layout()
+# displaying the plot:
+plt.show()
+
+
+
