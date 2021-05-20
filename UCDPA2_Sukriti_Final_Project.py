@@ -720,7 +720,7 @@ combined_metrices.reset_index()
 print(combined_metrices)
 
 
-# Step iv) Visualization of Comparison of Metrices Computed from Different Models as Bar Plot and Table -
+# Step iv) Visualizations Comparing Metrices Computed from Different Models as Bar Plot and Table -
 # setting the figure and axis object for the first (top) plot:
 #fig, ax = plt.subplots(0,0)
 # creating the plot of Regression Metrices computed from Models as a bar plot:
@@ -751,4 +751,25 @@ tab.scale(1.6, 1.2)
 plt.show()
 
 
+#  Step v) Visualizing Gradient Boosting Algorithm's Performance using Yellowbrick Regression Visualizers -
+# A. Residual Plot - plotting the difference between expected & actual values:
+# importing the necessary library
+from yellowbrick.regressor import PredictionError, ResidualsPlot
+# instantiating the visualizing object with the model:
+visualizer = ResidualsPlot(tuned_gbt)
+# fitting the training data to the visualizer:
+visualizer.fit(life_feature_train, life_target_train)
+# evaluating the model on the testing data:
+visualizer.score(life_feature_test, life_target_test)
+# finalizing and rendering the figure:
+visualizer.show()
 
+# B. Prediction Error Plot - plotting the expected vs. actual values in model space:
+# instantiating the visualizing object with the model:
+visualizer = PredictionError(tuned_gbt)
+# fitting the training data to the visualizer:
+visualizer.fit(life_feature_train, life_target_train)
+# evaluating the model on the testing data:
+visualizer.score(life_feature_test, life_target_test)
+# finalizing and rendering the figure:
+visualizer.show()
