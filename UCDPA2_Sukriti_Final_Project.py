@@ -773,3 +773,218 @@ visualizer.fit(life_feature_train, life_target_train)
 visualizer.score(life_feature_test, life_target_test)
 # finalizing and rendering the figure:
 visualizer.show()
+
+
+
+
+
+### Data Source 2 - Data from WHO Open Data API - Understanding Life Expectancy at Birth
+
+## Step 1 - Querying the Data from WHO Open Data API for Life Expectancy at birth (years) data -
+# Loading the requests library to make the HTTP request:
+import requests
+# Packaging the request, sending it and catching the response for WHO OData API url for Life Expectancy at Birth (years) data:
+response = requests.get('https://ghoapi.azureedge.net/api/WHOSIS_000001')
+# Printing the response and the response status code received from the get request sent:
+print(response)
+
+
+## Step 2 - Retrieving the Data from API and Importing it into a DataFrame -
+# Importing the pandas library (alias as pd):
+import pandas as pd
+# Getting the API response in JSON format and assigning it to a variable:
+Life_exp = response.json()
+# Importing the JSON response into Pandas DataFrame:
+data = pd.DataFrame(Life_exp['value'])
+# Printing the first 5 rows of the DataFrame using the head method:
+print(data.head())
+# Studying the data size (total rows and columns) using the shape attribute:
+print(data.shape)
+# Identifying and aggregating any missing or Null value columns in the the DataFrame:
+print(data.isnull().sum())
+
+
+## Step 3 - Cleaning and Formatting the Data -
+# Scanning through some completely missing columns and finding them to be not very important for our dataset hence, dropping them entirely.
+# Dropping columns with Null values as these are completely irrelevant for the dataset using the dropna method:
+data_cleaned = data.dropna(axis=1)
+# Rechecking the data for any missing columns post dropping the columns:
+print(data_cleaned.isnull().sum())
+# Rechecking the size of DataFrame after dropping of columns:
+print(data_cleaned.shape)
+# Post cleanup no columns with Missing data and the size of our DataFrame reduced from 23 to 14 columns.
+# Dropping other multiple irrelevant columns from the DataFrame:
+cleaned_df = data_cleaned.drop(['Id','IndicatorCode', 'SpatialDimType','TimeDimType','Dim1Type','Date','TimeDimensionValue','TimeDimensionBegin','TimeDimensionEnd'], axis = 1)
+# Rechecking the size of the cleaned DataFrame:
+print(cleaned_df.shape)
+# Renaming column headers post dropping irrelevant columns:
+cleaned_df.rename(columns={'SpatialDim':'Country_Code','TimeDim':'Year','Dim1':'Sex'}, inplace=True)
+print(cleaned_df)
+
+
+## Step 4 - Querying the Data from WHO Open Data API for Country Dimension Values -
+# Cleaned DataFrame had Country Codes but no Country Names. Therefore, querying the Open Data API again to get the Country Dimension Values.
+#  Packaging the request, sending it and catching the response for WHO OData API url for Country Dimensions:
+response = requests.get('https://ghoapi.azureedge.net/api/DIMENSION/COUNTRY/DimensionValues')
+#  Printing the response status code from the get request sent:
+print(response)
+
+## Step 5 - Retrieving the Data from API, Importing it into a DataFrame & Cleaning it -
+# Getting the API response in JSON format and assigning it to a variable:
+Country_dim = response.json()
+# Importing the JSON response into Pandas DataFrame:
+country_df = pd.DataFrame(Country_dim['value'])
+# Printing the size of the DataFrame using the shape attribute:
+print(country_df.shape)
+# Renaming column headers post dropping irrelevant columns:
+country_cleaned_df = country_df.drop(['Dimension','ParentDimension'], axis = 1)
+country_cleaned_df.rename(columns={'Code':'Country_Code','Title':'Country_Name','ParentCode':'Region_Code','ParentTitle':'Region Name' }, inplace=True)
+print(country_cleaned_df.head())
+
+## Step 6 - Combining the cleaned Life Expectancy & Country Dimensions DataFrame and searching for any Misssing Values -
+# Merging Life Expectancy at birth DataFrame with Country Dimension Dataframe:
+Life_exp_at_birth = cleaned_df.merge(country_cleaned_df,on='Country_Code',how='left')
+# Printing the first 5 rows of the DataFrame using the head method:
+print(Life_exp_at_birth.head())
+# Identifying any missing or NaN value columns in the the DataFrame and summing them:
+print(Life_exp_at_birth.isnull().sum())
+# Filtering out all rows containing one or more missing values in the merged DataFrame using isna() method:
+missing_rows = Life_exp_at_birth[Life_exp_at_birth["Country_Name"].isna()]
+print(missing_rows)
+
+
+## Step 7 - Imputing Missing Values for Sub-regions or World Bank Income Groups with correct Region Names & Codes-
+# Most missing values primarily for Sub-region based columns like for Africa or Americas etc or for World Bank Income Groups.
+# Therefore, searching for correct Region Codes and Names and imputing them.
+# A. Creating a Python function fill_update to impute missing rows with correct values -
+# creating a function to fill and update missing columns with correct Region Names and Region Codes:
+def fill_update(str1, str2):
+    """Function to impute missing values with correct Region Name, Region Codes inputted during function call."""
+
+    missing_rows_str1 = missing_rows[missing_rows['Country_Code'] == str1]
+    # Imputing missing values rows by using fillna and update mehod:
+    missing_rows_str1.update(missing_rows[['Country_Name', 'Region Name']].fillna(str2))
+    missing_rows_str1.update(missing_rows['Region_Code'].fillna(str1))
+
+    return missing_rows_str1
+
+# B. Calling the fill_update function with correct Region Names and Codes as arguments -
+# Calling the function with correct codes and names:
+Africa_region = fill_update('AFR','Africa')
+Americas_region = fill_update('AMR','Americas')
+SEA_region = fill_update('SEAR','South-East Asia')
+Europe_region = fill_update('EUR','Europe')
+East_Med_region = fill_update('EMR','Eastern Mediterranean')
+West_Pacif_region = fill_update('WPR','Western Pacific')
+Global_region = fill_update('GLOBAL','Global')
+WB_Low_Inc_region = fill_update('WB_LI','World Bank Low Income')
+WB_LowMid_Inc_region = fill_update('WB_LMI','World Bank Lower Middle Income')
+WB_UppMid_Inc_region = fill_update('WB_UMI','World Bank Upper Middle Income')
+WB_High_Inc_region = fill_update('WB_HI','World Bank High Income')
+
+# C. Dropping all Missing data rows from Combined Life Expectancy DataFrame and merging it with Imputed DataFrame -
+# Step i) Concatenating Imputed data for all the Sub-regions & World Bank Income Groups using the concat function:
+region_income_Life_Exp = pd.concat([Africa_region, Americas_region,SEA_region,Europe_region,East_Med_region,West_Pacif_region,Global_region,WB_Low_Inc_region,
+                           WB_LowMid_Inc_region,WB_UppMid_Inc_region,WB_High_Inc_region], axis=0)
+
+
+# Step ii) Dropping rows with null values from original Combined Life Expectancy DataFrame:
+Life_exp_at_birth2 = Life_exp_at_birth.dropna()
+
+# Step iii) Combining Life expectancy and Imputed DataFrame using the concat function:
+# dropping NumericValue column also as it replicates the Value column:
+Life_exp_at_birth_comb = pd.concat([Life_exp_at_birth2,region_income_Life_Exp], axis=0).drop(['NumericValue'], axis = 1)
+# printing a snapshot of first 5 rows of the Consolidated DataFrame using the head method:
+print(Life_exp_at_birth_comb.head())
+
+
+## Step 8 - Cleaning and Formatting the Combined Life Expectancy (with Imputed values) DataFrame -
+# Checking for missing values in combined Life Expectancy DataFrame:
+print(Life_exp_at_birth_comb.isnull().sum())
+# Getting a concise summary of a DataFrame using the info() method:
+print(Life_exp_at_birth_comb.info())
+# Changing Datatype for Value column to float and rechecking the summaries again, using the info() method:
+Life_exp_at_birth_comb["Value"] = Life_exp_at_birth_comb['Value'].astype('float')
+print(Life_exp_at_birth_comb.info())
+
+
+## Step 9 - Visualizing Life Expectancy at birth (years) Data through Charts -
+# Chart 1 - Distribution of Life Expectancy at birth by Gender (during 2000-19) -
+# Step i) Slicing Life Expectancy DataFrame where Year does not include 1920:
+df_excluding_1920 = Life_exp_at_birth_comb[Life_exp_at_birth_comb['Year'] != 1920]
+# printing the size of the DataFrame using the shape attribute:
+print(df_excluding_1920.shape)
+
+# Step ii) Visualizing Gender-wise Life expectancy at birth as a Violin plot using Seaborn:
+# importing Seaborn (alias as sns) and Matplotlib pyplot (alias as plt) for the visualization:
+import seaborn as sns
+import matplotlib.pyplot as plt
+# creating figure and axis objects for the plot and defining the size of the plot:
+plt.figure(figsize=(10,8))
+# creating a violin plot of Life Expectancy at birth by Year (excluding 1920) segregated by Sex:
+sns.violinplot(x='Year',y='Value',data=df_excluding_1920,palette='rainbow',hue='Sex')
+# adding the x and y axis labels to the plot:
+plt.ylabel('Life Expectancy at birth (years)',fontsize= 12)
+plt.xlabel('Year',fontsize=12)
+# adding a plot title and legend:
+plt.title("Distribution of Life Expectancy at birth (years) by Gender during 2000-19", fontsize= 14)
+plt.legend(loc='lower right')
+# finally displaying the plot:
+plt.show()
+
+
+# Chart 2 - Distribution of Life Expectancy at birth by World Bank Income Groups (during 2000-19) -
+# Step i) Slicing the Life Expectancy DataFrame by World Bank Income Group Region/Country Codes:
+# Region/Country Codes starting with WB_ therefore, using Regular Expressions in Python to slice Region_Code column matching this pattern
+# finding all rows where Region Name has World Bank Income Groups in it and Country_Code or Region_Code starts with WB_:
+# importing the library for use in Regular Expressions:
+import regex as re
+# a) creating an empty list to store matched patterns:
+WB_Income_Group = []
+# b) listing all the unique Region_Code values from the Life Expectancy at birth DataFrame:
+region_code_list = Life_exp_at_birth_comb['Region_Code'].unique()
+# c) defining the regex pattern we need to find from the list:
+# In regex, \A  - matches if the specified characters are at the start of a string. Here we find all Region_Codes starting with WB_
+# regex1 = r"\AWB_.*"
+regex = r"^(WB_.*)"
+# d) matching each Region_Code in the list to the pattern we want to find using regex:
+for text in region_code_list:
+# e) finding all matches of the regex i.e. all Regions with Region_Codes starting with WB_:
+    matched_patterns = re.findall(regex,text)   # findall() method returns a list of strings containing all matches
+# printing all matches of the regex if it returns a non-empty list:
+    if matched_patterns != []:
+        WB_Income_Group.append(matched_patterns)
+# f) printing the World Bank Income group list containing matched patterns from regex:
+print(WB_Income_Group)
+
+
+# Step ii) Getting a list of World Bank Income Group Region Codes by removing the square brackets from Regex match output:
+# creating an empty list named my_list:
+my_list = []
+# lopping through each item of World Bank Income group codes:
+for item in WB_Income_Group:
+    # appending bracket-less Income group codes to the empty list, my_list:
+    my_list.append(item[0])
+# printing the cleaned list of Income group codes:
+print(my_list)
+
+
+# Step iii) Slicing the Life Expectancy DataFrame to subset rows containing only World Bank Income Groups Data:
+# slicing data using the isin method:
+WB_Inc_Groups_LE = df_excluding_1920[df_excluding_1920['Country_Code'].isin(my_list)]
+# printing a snapshot of the first 5 rows of the DataFrame using the head() method:
+print(WB_Inc_Groups_LE.head())
+
+
+# Step iv) Visualizing Life Expectancy at birth by World Bank Income Groups as a Boxplot using Seaborn:
+# creating figure and axis objects for the plot and defining the size of the plot:
+plt.figure(figsize=(10,8))
+# creating a box plot of Life Expectancy at birth by Year (excluding 1920) segregated by World Bank Income Groups:
+sns.boxplot(data=WB_Inc_Groups_LE,x='Year',y='Value',hue='Region Name')
+# adding the x and y axis labels and a title to the plot:
+plt.ylabel('Life Expectancy at birth (years)',fontsize= 12)
+plt.xlabel('Year',fontsize=12)
+plt.title('Distribution of Life Expectancy at birth by World Bank Income Groups (during 2000-19)', fontsize=14)
+# finally displaying the plot:
+plt.show()
+
