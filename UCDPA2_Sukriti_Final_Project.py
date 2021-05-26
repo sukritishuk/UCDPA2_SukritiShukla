@@ -426,7 +426,7 @@ from sklearn.linear_model import LassoCV
 # instantiating our regressor for performing Lasso Cross-Validation:
 reg = LassoCV()
 
-# fitting our regressor to the training data:
+# fitting our regressor to the training data using the fit() method:
 reg.fit(life_feature_train,life_target_train)
 
 # printing the best alpha and best score from Lasso CV using the alpha_ and score_ attribute :
@@ -729,38 +729,43 @@ combined_metrices.reset_index()
 print(combined_metrices)
 
 
-# Step iv) Visualizations Comparing Metrices Computed from Different Models as a Bar Plot and a Table -
-# creating the plot of Regression Metrices computed from Models as a bar plot:
-combined_metrices.plot(x='Model',y=['R-squared','Root Mean Squared Error','Mean Absolute Error', 'Mean Absolute Percentage Error'], kind='bar',grid=True, figsize=(10,8))
-# adding x-axis ticks and formatting them:
-plt.xticks(rotation = 10) # Rotates X-Axis Ticks by the specified degrees
+# Step iv) Visualizations Comparing Metrices Computed from Different Models as a Horizontal Bar Plot and a Table -
+# converting metrics values from a DataFrame to a list for use in the Matplotlib table:
+a = combined_metrices.values
+# storing the metrics list in a variable:
+metrices = a.tolist()
+
+# creating the plot of Regression Metrices computed from Models as a horizontal bar plot:
+# setting the figure and axes object and specifying the figure size for the plot:
+fig, ax = plt.subplots(2,1,figsize=(12,10))
+
+# creating the top plot as a horizontal bar plot using the Pandas plot function, specifying kind argument as barh:
+combined_metrices.plot(ax=ax[0],x='Model',y=['R-squared','Root Mean Squared Error','Mean Absolute Error', 'Mean Absolute Percentage Error','Mean Squared Error'], kind='barh')
+
 # adding a title to the plot:
-plt.title('Comparing Regression Metrices from Different Models')
-# Show the grid lines as grey lines
-plt.grid(alpha=0.5)
-plt.legend(title='Regression Metrices')
-plt.show()
+ax[0].set_title('Comparing Regression Metrices from Different Models',fontsize=12)
 
-# setting the figure and axis object for the second (bottom) plot:
-#plt.subplots(0,1)
-# specifying layout formats:
-#plt.axis('tight')
-# setting off the axes for table:
-#plt.axis('off')
-val1 = combined_metrices.values
-val3 = combined_metrices.columns
+# adding a legend to the plot:
+ax[0].legend(title='Regression Metrices')
 
-fig, ax = plt.subplots()
-ax.set_axis_off()
-# creating a Matplotlib table from the combined DataFrame for metrices computed:
-tab = plt.table(cellText=val1 ,colLabels=val3,loc="center",colColours =["yellow"] * 6,
-              cellLoc='center')
+# resizing subplots in a figure to avoid overlapping:
+plt.axis('tight')
+
+# setting off the axes for table plot:
+plt.axis('off')
+
+# creating the bottom plot as a Matplotlib table from the combined DataFrame for all the metrices computed:
+tab = ax[1].table(cellText=metrices,colLabels=combined_metrices.columns,loc="center",colColours =["yellow"] * 6,
+              cellLoc='center',rowLoc='left')
+
 # setting the fontsize of the text in the table created:
-tab.set_fontsize(15)
+tab.set_fontsize(30)
+
 # setting the size of the table created:
-tab.scale(1.2, 1.2)
+tab.scale(1.4, 1.2)
 
 # displaying the plot:
+fig.tight_layout()
 plt.show()
 
 
