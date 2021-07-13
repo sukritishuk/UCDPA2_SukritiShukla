@@ -1,6 +1,6 @@
 ## UCDPA2_SukritiShukla
 
-# **Understanding Life Expectancy and Predicting Life Expectancy using Machine Learning in Python**
+# **Understanding and Predicting Life Expectancy using Machine Learning in Python**
 
 ## (Mastering Machine Learning Technques using Python)
 UCD Professional Academy - Speciaist Certificate in Data Analytics Essentials **Final Project**
