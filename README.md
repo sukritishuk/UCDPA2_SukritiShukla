@@ -33,6 +33,10 @@ GHO currently has two Data APIs – GHO OData API and Athena API.For my project,
 As my dataset contained several independent factors such as adult mortality, infant deaths, GDP levels etc. influencing Life Expectancy I used Regression-based models (tree-models like Decision Trees, Random Forests and regression techniques like Linear Regression, Lasso Regression etc) to make predictions. Supervised Machine Learning algorithms from scikit-learn (also called sklearn) library were used to fit models to the training set and make predictions on the testing set. I compared models and tuned weaker models to improve their performance using Boosting algorithms and Hyperparameter tuning to optimize prediction accuracies using Grid Search. I tried to implement Feature Selection and Feature Importance using a tree model and a regularization technique to understand which factors from the Life expectancy dataset were the most relevant. I also used the Yellowbrick library, a diagnostic visualization platform for machine learning that allows data scientists to steer the model selection process. Its scikit-learn API with new core object: the Visualizer was used to make some key graphs for tuned models.
 
   I tried to understand variations in Life Expectancy at birth (LEB) between Genders (Male vs. Female) through charts and metrices over a period of over 20 years (2000-19) and studied how the distribution of LEB changed over time for various World Bank Income Group economies. Both the predictions made using Machine learning tools in Python and basic Seaborn and Matplotlib visualizations helped me in learning more about what factors have contributed to the Life Expectancy changes over the last 15-20 years across the world and which of them could be focused on more by governments to improve their health conditions and overall quality of life by reducing mortality rates and disease prevention.
+  
+To summarize, I used the datasets in the following different formats to work on this project – 
+* REST API (open source) 
+* CSV file
 
 ## Visualizations & Insights Drawn 
 
