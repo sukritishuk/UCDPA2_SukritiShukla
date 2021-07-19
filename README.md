@@ -45,7 +45,7 @@ For this project, I made use of Supervised Machine Learning techniques for regre
 Visualization of predictions were made using Seaborn and Matplotlib libraries. Visualizations and insights drawn from them helped me learn more about what factors have contributed to the Life Expectancy changes over time. It also explained which factors could be focused on more by governments to improve their health conditions and overall quality of life by reducing mortality rates and disease prevention.
 
 
-**Chart 1 - Visualizing the Correlation among different Life Expectancy related factors as a Heatmap –
+ **Chart 1 - Visualizing the Correlation among different Life Expectancy related factors as a Heatmap –
 
 The Heatmap displayed the correlation among all the factors affecting Life Expectancy. The legend showed darker colors as having high negative correlation, while the lighter colors showed positive correlation. It was useful to understand how each of the factors like BMI or Alcohol consumption related to Life expectancy and how each would help understand the predictions made by Machine learning algorithms in the later stages of analysis.
 
