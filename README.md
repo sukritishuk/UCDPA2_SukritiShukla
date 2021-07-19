@@ -45,7 +45,7 @@ For this project, I made use of Supervised Machine Learning techniques for regre
 Visualization of predictions were made using Seaborn and Matplotlib libraries. Visualizations and insights drawn from them helped me learn more about what factors have contributed to the Life Expectancy changes over time. It also explained which factors could be focused on more by governments to improve their health conditions and overall quality of life by reducing mortality rates and disease prevention.
 
 
- **Chart 1 - Visualizing the Correlation among different Life Expectancy related factors as a Heatmap –
+ #### Chart 1 - Visualizing the Correlation among different Life Expectancy related factors as a Heatmap –
 
 The Heatmap displayed the correlation among all the factors affecting Life Expectancy. The legend showed darker colors as having high negative correlation, while the lighter colors showed positive correlation. It was useful to understand how each of the factors like BMI or Alcohol consumption related to Life expectancy and how each would help understand the predictions made by Machine learning algorithms in the later stages of analysis.
 
@@ -56,7 +56,7 @@ The following set of insights could be drawn from the above visualization: -
 * There exists a high correlation between some factors themselves like between thinness of 5–9 year-old and thinness 1-19 year-old. Similarly, high correlation exists between     Population and infant deaths. This multi-collinearity attribute among variables can be an influencer in some model performances during machine learning.
 
 
-**Chart 2 - Visualizing the Life Expectancy trends for Developed vs. Developing countries as Boxplots –
+ #### Chart 2 - Visualizing the Life Expectancy trends for Developed vs. Developing countries as Boxplots –
 
 This chart had been plotted to show the distribution of Life expectancy values between Developed and Developing countries over a span of 16 years (from 2000-15). It studied if there was any trend in the life expectancy values over a period of 20 years. Time-series based analysis was important to understand if time played any role in the trends and if better technology, more resources influenced life expectancy values or not.
 
@@ -66,7 +66,7 @@ This chart had been plotted to show the distribution of Life expectancy values b
 Insights drawn from the above visualization - Developing economies lagged the developed countries throughout this period. However, there was a slight upward trend (except for 2014) in the developing economies’ distributions. From 2005 onwards, the median value of life expectancies, showed an improvement in those nations as well.
 
 
-**Chart 3 - Plotting the Distribution of Life Expectancy at birth (years) by Gender during 2000-19 –
+ #### Chart 3 - Plotting the Distribution of Life Expectancy at birth (years) by Gender during 2000-19 –
 
 Seaborn violin plots were used to depict gender-wise of life expectancies over time. The x-axis showed the different years while the y-axis the life expectancy at birth values. The plot was segregated by Gender using the hue parameter in Seaborn. Thus, for each of the years we had 3 set of violin plots was made, one for each Gender and the third one showing both genders.
 
@@ -75,7 +75,7 @@ Seaborn violin plots were used to depict gender-wise of life expectancies over t
 Insights from the plot - A violin plot was chosen here as it visualizes data distributions very clearly. The hue argument helped in clearly splitting the plot by Sex. As can be seen above, in each of the years, the Females had a higher median life expectancy value than males which meant that a female newborn had a longer expected life than a male newborn from 2000-19. The year 2010 has a much larger distribution for all the three Genders than other years. This might be due to some factor specific to that year.
 
 
-**Chart 4 - Distribution of Life Expectancy at birth (years) by World Bank Income Groups during 2000-19 –
+ #### Chart 4 - Distribution of Life Expectancy at birth (years) by World Bank Income Groups during 2000-19 –
 
 The World Bank classifies world’s economies into 4 income groups – high, upper-middle, lower-middle, low. As the API data rows had Country_Code starting with WB_ but missing Region Names, Country_Name and Region_Code, I used Regular Expressions (regex) library in Python to slice Country_Code matching to patterns starting with WB_. All matches were stored in an empty list and then used to slice the complete DataFrame to get only World Bank Income Groups-specific data.
 
@@ -88,7 +88,7 @@ Insights drawn from boxplots - The boxplots clearly show the distribution of lif
 
 
 ### Visualizations from Running Machine Learning Algorithms on Life Expectancy data -
-**Chart 5 - Visualizing the Coefficients generated from Linear Regression Model - 
+ #### Chart 5 - Visualizing the Coefficients generated from Linear Regression Model - 
 
 ![Chart 6](https://user-images.githubusercontent.com/50409210/126191074-a70dbff2-838d-4dee-8005-180146d5af86.PNG)
 
@@ -98,14 +98,14 @@ The sign of a regression coefficient shows if there is a positive or negative co
 Similar charts were made for Lasso and Ridge regularization models.
 
 
-**Chart 6 - Visualizing Feature Selection using Lasso Regression - 
+ #### Chart 6 - Visualizing Feature Selection using Lasso Regression - 
 
 Lasso regression can be used to select important features of the life expectancy dataset. If the feature is irrelevant, Lasso penalizes its coefficient and shrinks it to 0. Hence, the features with coefficient = 0 are removed while features whose coefficients are not shrunk to 0 are 'selected' by the LASSO algorithm. The below plot tried to understand the most relevant factors with respect to the life expectancy dataset.
 
 ![Chart 13](https://user-images.githubusercontent.com/50409210/126191693-a389932a-7ec2-463e-addf-4baab78f0fb0.PNG)
 
 
-**Chart 7 - Comparison of Regression Metrices Computed from Different Machine Learning Algorithms as a Horizontal Bar Plot and a Table –
+ #### Chart 7 - Comparison of Regression Metrices Computed from Different Machine Learning Algorithms as a Horizontal Bar Plot and a Table –
 
 ![Chart 17](https://user-images.githubusercontent.com/50409210/126191965-e281f2f0-b828-4483-bf73-d9947ea673c1.PNG)
 
@@ -124,7 +124,7 @@ It was found that the Gradient Boosting Regression Algorithm works the best for 
 * It also resulted in incredibly low forecast error (MAPE) which showed that it fit the data quite well and was fairly accurate in making predictions about Life Expectancy values (however,these metric values were still not from Tuned Gradient Boosting Algorithm).
 
 
-**Chart 8 - Visualizing Gradient Boosting Algorithm’s Performance on Life Expectancy data using Yellowbrick Regression Visualizers –
+ #### Chart 8 - Visualizing Gradient Boosting Algorithm’s Performance on Life Expectancy data using Yellowbrick Regression Visualizers –
 
 These set of visualization were made using Yellowbrick an open source scikit-learn API with visual analysis and diagnostic tools. I used its new core object: the Visualizer to fit the Gradient Boosting model and evaluate its performance on life expectancy dataset.
 
