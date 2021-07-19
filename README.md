@@ -126,7 +126,7 @@ It was found that the Gradient Boosting Regression Algorithm works the best for 
 
  #### Chart 8 - Visualizing Gradient Boosting Algorithm’s Performance on Life Expectancy data using Yellowbrick Regression Visualizers –
 
-These set of visualization were made using Yellowbrick an open source scikit-learn API with visual analysis and diagnostic tools. I used its new core object: the Visualizer to fit the Gradient Boosting model and evaluate its performance on life expectancy dataset.
+These set of visualization were made using [Yellowbrick](https://www.scikit-yb.org/en/latest/api/regressor/index.html) an open source scikit-learn API with visual analysis and diagnostic tools. I used its new core object: the Visualizer to fit the Gradient Boosting model and evaluate its performance on life expectancy dataset.
 
 Its Regression Visualizers were used to make 2 regression evaluations for the Gradient Boosting model: 
 * Residual plot – plotting the difference between expected and actual values. 
