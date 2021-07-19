@@ -51,7 +51,7 @@ The Heatmap displayed the correlation among all the factors affecting Life Expec
 
 ![Chart 2](https://user-images.githubusercontent.com/50409210/126188793-86cebc82-4cdc-4b03-98c7-57912bd68316.PNG)
 
-The following set of insights could be drawn from the above visualization: -
+The following set of ***insights*** could be drawn from the above visualization: -
 * BMI, Income composition of resources and Schooling are the three most positively correlated to Life Expectancy while Adult Mortality and HIV/AIDS are the two most negatively     correlated. 
 * There exists a high correlation between some factors themselves like between thinness of 5–9 year-old and thinness 1-19 year-old. Similarly, high correlation exists between     Population and infant deaths. This multi-collinearity attribute among variables can be an influencer in some model performances during machine learning.
 
@@ -63,7 +63,7 @@ This chart had been plotted to show the distribution of Life expectancy values b
 ![Chart 4](https://user-images.githubusercontent.com/50409210/126189210-a03e5492-1f5a-4e70-aaeb-015f6f6f4552.PNG)
 
 
-Insights drawn from the above visualization - Developing economies lagged the developed countries throughout this period. However, there was a slight upward trend (except for 2014) in the developing economies’ distributions. From 2005 onwards, the median value of life expectancies, showed an improvement in those nations as well.
+***Insights drawn*** - Developing economies lagged the developed countries throughout this period. However, there was a slight upward trend (except for 2014) in the developing economies’ distributions. From 2005 onwards, the median value of life expectancies, showed an improvement in those nations as well.
 
 
  #### Chart 3 - Plotting the Distribution of Life Expectancy at birth (years) by Gender during 2000-19 –
@@ -72,7 +72,7 @@ Seaborn violin plots were used to depict gender-wise of life expectancies over t
 
 ![Chart 20](https://user-images.githubusercontent.com/50409210/126189815-39352f09-1552-4621-ae61-072204e258f9.PNG)
 
-Insights from the plot - A violin plot was chosen here as it visualizes data distributions very clearly. The hue argument helped in clearly splitting the plot by Sex. As can be seen above, in each of the years, the Females had a higher median life expectancy value than males which meant that a female newborn had a longer expected life than a male newborn from 2000-19. The year 2010 has a much larger distribution for all the three Genders than other years. This might be due to some factor specific to that year.
+***Insights from the plot*** - A violin plot was chosen here as it visualizes data distributions very clearly. The hue argument helped in clearly splitting the plot by Sex. As can be seen above, in each of the years, the Females had a higher median life expectancy value than males which meant that a female newborn had a longer expected life than a male newborn from 2000-19. The year 2010 has a much larger distribution for all the three Genders than other years. This might be due to some factor specific to that year.
 
 
  #### Chart 4 - Distribution of Life Expectancy at birth (years) by World Bank Income Groups during 2000-19 –
@@ -84,7 +84,7 @@ Thereafter, data for these World Bank income groups was sliced and used to creat
 ![Chart 21](https://user-images.githubusercontent.com/50409210/126190479-3ce905ef-d070-4032-bdb8-5b0858f9de89.PNG)
 
 
-Insights drawn from boxplots - The boxplots clearly show the distribution of life expectancies across income groups. The Low Income group economies had the lowest distribution of life expectancy values for all the years while the High Income groups had the highest distributions. Also, the interquartile ranges for Upper-Middle and High Income groups are more spread or greater than those for Low Income or Lower-Middle Income groups.
+***Insights drawn from boxplots*** - The boxplots clearly show the distribution of life expectancies across income groups. The Low Income group economies had the lowest distribution of life expectancy values for all the years while the High Income groups had the highest distributions. Also, the interquartile ranges for Upper-Middle and High Income groups are more spread or greater than those for Low Income or Lower-Middle Income groups.
 
 
 ### Visualizations from Running Machine Learning Algorithms on Life Expectancy data -
@@ -118,7 +118,7 @@ The multiple horizontal bar plot showed each of the six models used to make pred
 For each model, the above 5 metrices were displayed as bars lengths. The Matplotlib table below the bar plot also displayed these computations for each model. Both these visuals helped in easy comparison of model performance. Although the models compared through this chart were not tuned models using GridSearchCV these comparisons still helped me get an idea which model would perform better than others if tuned even further with the best combination of hyperparameters.
 
 
-The following set of insights could be drawn from this comaprison - 
+The following set of ***insights*** could be drawn from this comaprison - 
 It was found that the Gradient Boosting Regression Algorithm works the best for the Life Expectancy dataset.
 * It yielded the least error values of RMSE, MAE and MSE while the R-squared value achieved was also the highest. 
 * It also resulted in incredibly low forecast error (MAPE) which showed that it fit the data quite well and was fairly accurate in making predictions about Life Expectancy values (however,these metric values were still not from Tuned Gradient Boosting Algorithm).
