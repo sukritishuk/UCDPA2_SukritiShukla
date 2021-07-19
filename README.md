@@ -145,7 +145,7 @@ For the Gradient Boosting algorithm on life expectancy data, we can see from the
 
 ## Conclusion
 
-### Conclusions from Machine Learning Predictions about Life Expectancy Dataset –
+#### Conclusions from Machine Learning Predictions about Life Expectancy Dataset –
 Based on the visualizations and comparative analysis of different models tried in this project, I found that the tuned Gradient boosting algorithm (more precisely the tuned Stochastic Gradient Boosting algorithm, as subsample < 1.0) was most appropriately able to make predictions on the Life Expectancy dataset from Kaggle. This model provided the least error values, gave the highest R-squared value of around 93-94%, and achieved the least forecast error (MAPE) of around 3%, out of all the models tried even without applying model tuning (as shown in the snapshots below).
 
 ![Chart 16](https://user-images.githubusercontent.com/50409210/126193169-224034bd-a56c-4b86-931b-0728d14814f2.PNG)
@@ -154,7 +154,7 @@ Based on the visualizations and comparative analysis of different models tried i
 Its plot of actual values against predicted life expectancies as shown above (and from Yellowbrick API) along with the below snapshot of Actual vs. Predicted Life Expectancies also gave little differences or Residuals. Apart from Gradient Boosting algorithm, the Linear and Ridge regression models also performed quite well on the Life Expectancy dataset from Kaggle in making predictions
 
 
-### Learning Takeaways from the Project - 
+#### Learning Takeaways from the Project - 
 
 This project helped me get a comprehensive view about the Life Expectancy in general. I was able to analyze what factors were related to it and which influence it the most. I could get insights about how life expectancies differed between developed and developing countries. 
 
