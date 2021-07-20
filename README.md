@@ -126,9 +126,7 @@ Lasso regression can be used to select important features of the life expectancy
 
  #### Chart 7 - Comparison of Regression Metrices Computed from Different Machine Learning Algorithms as a Horizontal Bar Plot and a Table –
 
-![Chart 17](https://user-images.githubusercontent.com/50409210/126191965-e281f2f0-b828-4483-bf73-d9947ea673c1.PNG)
-
-The above plot, tried to combine the results from different Machine learning algorithms into one plot. It contained 2 subplots – 
+The below plot, tried to combine the results from different Machine learning algorithms into one plot. It contained 2 subplots – 
 * a Pandas horizontal bar plot at the top and 
 * a Matplotlib table below it
 
@@ -140,7 +138,9 @@ For each model, the below 5 metrices were displayed as bars lengths, while the M
 * Mean Absolute Percentage Error
 * R-squared 
 
-Both these visuals helped in easy comparison of model performance. Although the models compared through this chart were not tuned models using GridSearchCV these comparisons still helped me get an idea which model would perform better than others (if tuned even further with the best combination of hyperparameters).
+![Chart 17](https://user-images.githubusercontent.com/50409210/126191965-e281f2f0-b828-4483-bf73-d9947ea673c1.PNG)
+
+Both these visuals helped in easy comparison of model performance. Although the models compared through this chart were not tuned models using **GridSearchCV** these comparisons still helped me get an idea which model would perform better than others (if tuned even further with the best combination of hyperparameters).
 
 The following set of ***insights*** were be drawn from this comaprison - 
 It was found that the Gradient Boosting Regression Algorithm works the best for the Life Expectancy dataset mainly beacause of the following -
