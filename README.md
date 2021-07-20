@@ -139,13 +139,13 @@ For each model, the below 5 metrices were displayed as bars lengths, while the M
 * R-squared 
 
 ![Chart 17](https://user-images.githubusercontent.com/50409210/126191965-e281f2f0-b828-4483-bf73-d9947ea673c1.PNG)
-
 Both these visuals helped in easy comparison of model performance. Although the models compared through this chart were not tuned models using **GridSearchCV** these comparisons still helped me get an idea which model would perform better than others (if tuned even further with the best combination of hyperparameters).
 
 The following set of ***insights*** were be drawn from this comaprison - 
 It was found that the Gradient Boosting Regression Algorithm works the best for the Life Expectancy dataset mainly beacause of the following -
 * It yielded the least error values of RMSE, MAE and MSE while the highest values for R-squared. 
 * It also resulted in incredibly low forecast error (MAPE). This indicated that it fit the data quite well and was fairly accurate in making predictions about Life Expectancy values (however these metric values were still not from Tuned Gradient Boosting Algorithm).
+
 
 
  #### Chart 8 - Visualizing Gradient Boosting Algorithm’s Performance on Life Expectancy data using Yellowbrick Regression Visualizers –
